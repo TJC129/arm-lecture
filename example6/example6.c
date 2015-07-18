@@ -9,7 +9,7 @@ int main(void)
 
 	x = &a;
 	b = *x + 2;
-	printf("The address of a is 0x%x\n",x);
+	printf("The address of a is 0x%d\n",&x);
 	printf("The value of b is now %d\n",b);
 	return 0;
 }
