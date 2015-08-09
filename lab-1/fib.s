@@ -13,6 +13,7 @@
 @		if(term == 1) return val;
 @		return fib(term - 1, val+prev, val);
 @}
+
 fibonacci:
 	@ ADD/MODIFY CODE BELOW
 	@ PROLOG
@@ -28,16 +29,11 @@ cmp r4, #1;
 beq .L4;
 	@ R0 = R4 - 1
 	@ Recursive call to fibonacci with R4 - 1 as parameter
-add r0, r4, #0xFFFFFFFF;
+add r0, r4, #0xFFFFFFFF
+mov r3, r1
+add r1, r1, r2
+mov r2, r3
 bl fibonacci;
-	@ R5 = R0
-	@ R0 = R4 - 2
-	@ Recursive call to fibonacci with R4 - 2 as parameter
-mov r5, r0;
-sub r0, r4, #2;
-bl fibonacci;
-	@ R0 = R5 + R0 (update flags)
-add r0, r5, r0;
 	pop {r3, r4, r5, pc}		@EPILOG
 
 	@ END CODE MODIFICATION
@@ -46,7 +42,7 @@ add r0, r5, r0;
 	pop {r3, r4, r5, pc}		@ EPILOG
 
 .L4:
-	mov r0, #1			@ R0 = 1
+	mov r0, r1			@ R0 = R1
 	pop {r3, r4, r5, pc}		@ EPILOG
 	.size fibonacci, .-fibonacci
 	.end
