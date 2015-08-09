@@ -7,7 +7,12 @@
 
 	.global fibonacci
 	.type fibonacci, function
-
+@int fib(int term, int val = 1, int prev = 0)
+@{
+@		if(term == 0) return prev;
+@		if(term == 1) return val;
+@		return fib(term - 1, val+prev, val);
+@}
 fibonacci:
 	@ ADD/MODIFY CODE BELOW
 	@ PROLOG

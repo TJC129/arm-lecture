@@ -22,10 +22,12 @@ fibonacci:
 
 @ R0  (update flags)
 @ r0 for storing index value 
-@ ends the subroutine if i<=2
+@ ends the subroutine if i<=2, i>46 out of range of int
 cmp r0, #2;
 ble .L5; 
 
+cmp r0, #46;
+bgt .L6;
 
 @ init the tmp data
 @ r3 for N-1
@@ -56,6 +58,9 @@ pop {r3, r4, r5, pc}	@EPILOG
 
 .L5:	@end of sub routine (n<=2)
 	mov r0, #1;
+	pop {r3, r4, r5, pc}	@EPILOG
+.L6: @ end of subroutine (n>46)
+	mov r0, #0;
 	pop {r3, r4, r5, pc}	@EPILOG
 
 	@ END CODE MODIFICATION
