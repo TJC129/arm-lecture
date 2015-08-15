@@ -1,12 +1,12 @@
 CC	= arm-linux-gnueabihf-gcc
-CFLAGS	= -O1 -Wall
+CFLAGS	= -O0 -ggdb -Wall 
 LDFLAGS = -fno-stack-protector
 
 objects	= fibseq.o fib.o
 
 default: fibseq
 
-.PHONY: default clean qemu
+.PHONY: default clean qemu plot
 
 fibseq: $(objects)
 	$(CC) $(LDFLAGS) -o $@ $^
@@ -23,24 +23,14 @@ fibseq.o: fibseq.c
 clean:
 	rm -f $(objects) fibseq
 
-QEMU_CMD = qemu-arm -L /usr/arm-linux-gnueabihf ./fibseq &
-CMD = yes 9 | $(call QEMU_CMD) && sleep 1
-qemu: fibseq
-	@yes 1 | $(call QEMU_CMD)
-	@sleep 1
-	@yes 2 | $(call QEMU_CMD)
-	@sleep 1
-	@yes 3 | $(call QEMU_CMD)
-	@sleep 1
-	@yes 4 | $(call QEMU_CMD)
-	@sleep 1
-	@yes 5 | $(call QEMU_CMD)
-	@sleep 1
-	@yes 6 | $(call QEMU_CMD)
-	@sleep 1
-	@yes 7 | $(call QEMU_CMD)
-	@sleep 1
-	@yes 8 | $(call QEMU_CMD)
-	@sleep 1
-	@yes 47 | $(call QEMU_CMD)
-	@sleep 1
+QEMU_CMD = qemu-arm -L /usr/arm-linux-gnueabihf ./fibseq
+qemu:
+	rm -f fib.txt
+	i=0; while [ $$i -le 47 ]; do echo $$i; \
+	yes $$i | $(call QEMU_CMD); \
+	i=$$(($$i+1)); done
+	
+plot: qemu
+	gnuplot -e "filename='fib.txt'" plot.gnu
+	xdg-open fib.png
+
